@@ -1,0 +1,47 @@
+BOLA Attack Detection Tool
+**Overview**
+This Go program detects potential Broken Object Level Authorization (BOLA) attacks by analyzing log files and identifying suspicious user activities.A Broken Object Level Authorization (BOLA) attack occurs when a user manipulates access to resources they are not authorized to access by tampering with object identifiers in the request (e.g., changing user IDs or resource IDs). In this context, we track suspicious movements to detect such attacks.
+We set the threshold for detecting potential BOLA attacks at 3 suspicious movements for the following reasons:
+
+**Repeated Unauthorized Access Attempts:**
+
+When a user consistently tries to access unauthorized resources, it raises a red flag. A single unauthorized access (e.g., a 403 status code) could be a mistake or a one-off error. However, when a user performs multiple unauthorized access attempts, especially targeting different resources or user IDs, this suggests they are actively testing the system or trying to exploit object-level permissions.
+Behavior Consistency:
+
+Attackers often don’t stop at a single attempt. They will typically keep trying different resources (e.g., user profiles, documents) to find a vulnerability in the system. If a user makes 3 such attempts, it indicates a pattern of deliberate and sustained efforts to access resources outside their authorized scope.
+**Threshold for Identification:**
+
+Setting the threshold at 3 suspicious movements ensures we strike a balance between avoiding false positives (such as one-off errors) and catching users who are consistently performing suspicious activities. This threshold reflects the minimal threshold for behavior that indicates a pattern of malicious intent, not just a single accidental request.
+
+**Purpose**
+The tool helps security professionals identify potential unauthorized access attempts by monitoring:
+
+HTTP requests with 4xx status codes
+Multiple suspicious movements from the same user token
+
+**Key Features**
+
+Parses JSON-formatted log files
+Detects suspicious HTTP requests
+Tracks user activities based on authentication tokens
+Identifies potential attackers with multiple suspicious movements
+
+**How It Works**
+
+Scans log file entries
+Extracts authentication tokens
+Identifies requests with 4xx status codes
+Tracks suspicious movements per token
+Flags users with more than 3 suspicious movements
+
+**Detection Criteria**
+
+4xx status codes indicate potential unauthorized access
+
+3 suspicious movements suggest a potential attacker
+
+**Output**
+
+Detailed report of potential attackers
+Token information
+Suspicious activity details
